@@ -81,7 +81,7 @@ const generatorId = createGeneratorId();
 
 export const StartServer = () => {
 	assert(isServer, 'StartServer can only be called on the server');
-	assert(!isStarterServer, 'StartServer can only be called once');
+    if (isStarterServer) return;
 
 	remotes.OnRequestSharedClasses.connect((player) => {
 		if (RequestedPlayers.has(player)) return;
@@ -117,7 +117,7 @@ export const StartServer = () => {
 
 export const StartClient = () => {
 	assert(isClient, 'StartClient can only be called on the client');
-	assert(!isStarterClient, 'StartClient can only be called once');
+    if (isStarterClient) return;
 
 	remotes.CreateSharedInstance.connect((id, sharedClassName, args, properties, clientMethodInitName) => {
         if (!SharedClasses.has(sharedClassName)) {
