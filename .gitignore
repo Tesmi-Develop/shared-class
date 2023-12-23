@@ -2,4 +2,5 @@
 /out
 /include
 /src/example
+/default.project.json
 *.tsbuildinfo
