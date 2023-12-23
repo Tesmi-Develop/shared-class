@@ -429,3 +429,7 @@ export const SharedClass = <T extends object, K extends keyof ExtractMethods<T>,
 export const GetSharedInstance = (id: SharedClassId) => {
     return SharedInstancesById.get(id)?.Instance;
 }
+
+export const GetSharedInstanceId = (object: object) => {
+    return SharedInstances.get(object)?.Id;
+}
