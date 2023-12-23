@@ -1,14 +1,20 @@
 {
   "name": "@rbxts/shared-class",
   "version": "1.0.0",
-  "description": "A package that introduces 'SharedClass' concept. It's a class that is synced on server and client and provides useful abstraction for manipulating it",
+  "description": "A package that utilizes decorators to sync a class between server and client.",
   "main": "out/init.lua",
   "scripts": {
     "build": "rbxtsc",
     "watch": "rbxtsc -w",
     "prepublishOnly": "npm run build"
   },
-  "keywords": [],
+  "keywords": [
+    "SharedClass",
+    "Networking",
+    "Class",
+    "SynchronizedClasses"
+  ],
+  "repository": "https://github.com/Tesmi-Devlop/shared-class",
   "author": "tesmi",
   "license": "MIT",
   "types": "out/index.d.ts",
