@@ -70,8 +70,8 @@ const SharedClasses = new Map<string, ISharedClass>();
 const SharedInstances = new Map<object, ISharedInstance>();
 const SharedInstancesById = new Map<SharedClassId, ISharedInstance>();
 
-const isStarterClient = false;
-const isStarterServer = false;
+let isStarterClient = false;
+let isStarterServer = false;
 const isServer = RunService.IsServer();
 const isClient = RunService.IsClient();
 const OnRequestSharedClasses = new Signal<(Player: Player) => void>();
@@ -82,6 +82,7 @@ const generatorId = createGeneratorId();
 export const StartServer = () => {
 	assert(isServer, 'StartServer can only be called on the server');
     if (isStarterServer) return;
+    isStarterServer = true;
 
 	remotes.OnRequestSharedClasses.connect((player) => {
 		if (RequestedPlayers.has(player)) return;
@@ -118,6 +119,7 @@ export const StartServer = () => {
 export const StartClient = () => {
 	assert(isClient, 'StartClient can only be called on the client');
     if (isStarterClient) return;
+    isStarterClient = true
 
 	remotes.CreateSharedInstance.connect((id, sharedClassName, args, properties, clientMethodInitName) => {
         if (!SharedClasses.has(sharedClassName)) {
