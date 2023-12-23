@@ -1,6 +1,6 @@
 {
   "name": "@rbxts/shared-class",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A package that utilizes decorators to sync a class between server and client.",
   "main": "out/init.lua",
   "scripts": {
