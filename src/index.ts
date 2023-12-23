@@ -103,8 +103,7 @@ export const StartServer = () => {
 			const validator = $terrify<IPackageCallMethod>();
 			if (!validator(data)) return;
 
-			const sharedClass = getSharedClass(sharedInstance.sharedClass);
-			if (!sharedClass.ServerMethods.has(data.methodName)) return;
+			if (!sharedInstance.sharedClass.ServerMethods.has(data.methodName)) return;
 
 			const args = data.args as unknown[];
 			const callback = sharedInstance.Instance[data.methodName as never] as Callback;
