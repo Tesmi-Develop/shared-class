@@ -76,6 +76,7 @@ const isServer = RunService.IsServer();
 const isClient = RunService.IsClient();
 const OnRequestSharedClasses = new Signal<(Player: Player) => void>();
 const RequestedPlayers = new Set<Player>();
+const QueueCreateSharedInstance = new Set<SharedClassId>();
 const generatorId = createGeneratorId();
 
 export const StartServer = () => {
@@ -126,7 +127,9 @@ export const StartClient = () => {
     
         const object = SharedClasses.get(sharedClassName)!;
         
+        QueueCreateSharedInstance.add(id);
         const instance = new object.Constructor(id as never, ...(args as never[]));
+        QueueCreateSharedInstance.delete(id);
 
 		// Sync properties
         properties.forEach((data, propertyName) => {
@@ -359,7 +362,13 @@ export const SharedClass = <T extends object, K extends keyof ExtractMethods<T>,
 		const className = getClassName(sharedClass);
 
         objectWithconstructor.constructor = function(this, ...args: defined[]) {
-            const id = isServer ? generatorId.next() : args[0] as SharedClassId;
+            if (isClient) {
+                if (!typeIs(args[0], 'string') || !QueueCreateSharedInstance.has(args[0])) {
+                    originalConstructor(this, ...args);
+                    return;
+                }
+            }
+            let id = isServer ? generatorId.next() : args[0] as SharedClassId;
 			const instanceData = createInstanceSharedClass(this, id);
 			const maid = instanceData.Maid;
 
@@ -389,7 +398,7 @@ export const SharedClass = <T extends object, K extends keyof ExtractMethods<T>,
                 return;
             }
 
-            // Client code     
+            // Client code
             args.remove(0);
 
             originalConstructor(this, ...args);
